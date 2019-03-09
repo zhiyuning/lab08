@@ -6,8 +6,26 @@ template <class T>
 void destroy(T a);
 template <class T>
 void destroy(T *a);
-template <class T>
-void DeleteFuncs(T* b);
+//template <class T>
+//void DeleteFuncs(T b[]);
+
+template<class T>
+void destroy(T a){
+}
+
+template<class T>
+void destroy(T* a){
+  delete a;
+}
+
+//template<class T>
+//void DeleteFuncs(T b){
+//  if(is_pointer<T>::value){
+//    destroy(b);
+//  }else{
+//    destroy(b);
+//  }
+//}
 
 template <class T>
 SimpleList<T>::SimpleList(){
@@ -17,8 +35,10 @@ SimpleList<T>::SimpleList(){
 
 template <class T>
 SimpleList<T>::~SimpleList(){
-  for(int i = 0;i<CAPACITY;i++){
-    destroy(elements[i]);
+  if(is_pointer<T>::value){
+    for(int i = 0;i<numElements;i++){
+      destroy(elements[i]);
+    }
   }
   delete[] elements;
 }
@@ -89,24 +109,6 @@ void SimpleList<T>::remove(int index) throw (InvalidIndexException, EmptyListExc
     temp[i]=elements[i];
   }
   elements=temp;
-  //delete[] temp;
+
+  
 }
-
-
-template<class T>
-void destroy(T a){
-}
-
-template<class T>
-void destroy(T* a){
-  delete a;
-}
-
-//template<class T>
-//void DeleteFuncs(T b[]){
-//  if(is_pointer<T>::value){
-//    destroy(b);
-//  }else{
-//    destroy(b);
-//  }
-//}
