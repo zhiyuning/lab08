@@ -1,13 +1,15 @@
 #include "SimpleList.h"
 #include <iostream>
+#include <type_traits>
 using namespace std;
 
 template <class T>
 void destroy(T a);
 template <class T>
 void destroy(T *a);
-//template <class T>
-//void DeleteFuncs(T b[]);
+template <class T>
+void DeleteFuncs(T *b);
+
 
 template<class T>
 void destroy(T a){
@@ -18,14 +20,17 @@ void destroy(T* a){
   delete a;
 }
 
-//template<class T>
-//void DeleteFuncs(T b){
-//  if(is_pointer<T>::value){
-//    destroy(b);
-//  }else{
-//    destroy(b);
-//  }
-//}
+template<class T>
+void DeleteFuncs(T *b){
+  if(is_pointer<T>::value){
+    for(int i = 0;i<10;i++){
+      destroy(b[i]);
+    }
+  }else{
+    destroy(b);
+  }
+}
+
 
 template <class T>
 SimpleList<T>::SimpleList(){
@@ -36,11 +41,14 @@ SimpleList<T>::SimpleList(){
 template <class T>
 SimpleList<T>::~SimpleList(){
   if(is_pointer<T>::value){
-    for(int i = 0;i<numElements;i++){
+    for(int i = 0;i<10;i++){
       destroy(elements[i]);
     }
+  }else{
+    delete [] elements;
   }
-  delete[] elements;
+  //DeleteFuncs(elements);
+  //delete[] elements;
 }
 
 template <class T>
@@ -90,7 +98,6 @@ void SimpleList<T>::insert(T item) throw (FullListException){
   numElements++;
 }
 
-
 template <class T>
 void SimpleList<T>::remove(int index) throw (InvalidIndexException, EmptyListException){
   if(empty()){
@@ -109,6 +116,6 @@ void SimpleList<T>::remove(int index) throw (InvalidIndexException, EmptyListExc
     temp[i]=elements[i];
   }
   elements=temp;
+  //DeleteFuncs(temp);
 
-  
 }
